@@ -1,3 +1,4 @@
+<!-- state -->
 <!DOCTYPE html>
 <html>
     <body>
@@ -8,25 +9,23 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script type="text/babel">
         const root = document.getElementById("root");
-        function Title() {
-            return (
-                <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>hello</h3>
-            );
-        } 
-        const Button = () => (
-        <button 
-            style = {{
-            backgroundColor : "tomato",
-        }}
-            onClick = {() => console.log("im clicked")}
-        >
-        CLICK ME</button>
-        );
-        const Container = (<div>
-            <Title />
-            <Button />
+        // count를 올려주는 함수
+        let counter = 0 ; 
+        function countUp(){
+            counter = counter + 1
+            rerender();
+        }
+        function rerender(){
+            ReactDOM.render(<Container />, root);
+        }
+        
+        // react는 vanila와 다르게 바뀐 부분만 업데이트 해준다.
+        // h3와 button의 context는 바꾸지 않고 변수들만 바뀐다.
+        const Container = () => (<div>
+            <h3>Total clicks: {counter}</h3>
+            <button onClick={countUp}>click me</button>
             </div>
         );
-        ReactDOM.render(Container, root)
+        ReactDOM.render(<Container />, root)
     </script>
 </html>
