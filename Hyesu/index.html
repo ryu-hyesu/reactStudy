@@ -1,4 +1,4 @@
-<!-- state -->
+<!-- rerendering -->
 <!DOCTYPE html>
 <html>
     <body>
@@ -9,23 +9,21 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script type="text/babel">
         const root = document.getElementById("root");
-        // count를 올려주는 함수
         let counter = 0 ; 
-        function countUp(){
-            counter = counter + 1
-            rerender();
-        }
-        function rerender(){
-            ReactDOM.render(<Container />, root);
-        }
         
-        // react는 vanila와 다르게 바뀐 부분만 업데이트 해준다.
-        // h3와 button의 context는 바꾸지 않고 변수들만 바뀐다.
-        const Container = () => (<div>
-            <h3>Total clicks: {counter}</h3>
-            <button onClick={countUp}>click me</button>
-            </div>
-        );
-        ReactDOM.render(<Container />, root)
+        function App(){
+            // react에서 data와 data를 바꿀 수 있는 함수를 배열에 담아 자동 렌더링할 수 있도록 도와준다.
+            const [counter, countUp] = React.useStae(0);
+            // const counter = data[0];
+            // const modifier = data[1];
+
+            return (
+                <div>
+                    <h3>Total clicks: {counter}</h3>
+                    <button onClick={countUp}>click me</button>
+                </div>
+            );
+        }
+        ReactDOM.render(<App />, root)
     </script>
 </html>
