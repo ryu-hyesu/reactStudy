@@ -8,27 +8,68 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script type="text/babel">
-        function App(){
-            // production.min.js를 사용하고 있으며 development로 바꿔주어야 한다. 
-            // 왜 for이라는 약어를 사용할 수 있냐면, 이는 js코드이기 때문이다. 그러나 우리는 jsx를 사용하고 있으며 class도 사용해선 안 되며 classname을 사용해야 한다
-            const [minutes, setminutes] = React.useState()
+        function MinutesToHours() {
+            const [minutes, setminutes] = React.useState(0)
+            const [inverted, setInverted] = React.useState(false)
             const onChange = (event) => {
                 setminutes(event.target.value);
             }
+            const reset = () => {
+                setminutes(0);
+            }
+            const onInvert = () => {
+                reset()
+                setInverted((current) => !current);
+            }
+
             return (
                 <div>
-                    <h1 className="hi">super converter</h1>
                     <label htmlFor="minutes">Minutes</label>
                     <input 
-                        value = {minutes}
+                        value = {inverted ? minutes * 60 : minutes}
                         id = "minutes" 
                         placeholder="minutes" 
                         type="number"
-                        onChange={onChange}
-                    />
+                        onChange={onChange} // update data
+                        disabled={inverted}
+                        />
                     <h4>you want to convert {minutes}</h4>
                     <label htmlFor="hours">Hours</label>
-                    <input id = "hours" placeholder="hours" type="number"/>
+                    <input
+                        value = {!inverted ? minutes / 60 : minutes}
+                        id = "hours" 
+                        placeholder="hours" 
+                        type="number"
+                        onChange={onChange}
+                        disabled={!inverted}
+                    />
+                    <button onClick={reset}>reset</button>
+                    <button onClick={onInvert}>
+                        {inverted ? "Turn back" : "Invert"}
+                    </button>
+                </div>
+                
+            );
+        }
+        function KimToMiles(){
+            return <h3>KM 2 M</h3>;
+        }
+        function App(){
+            const [index, setIndex] = React.useState(0);
+            const onSelect = (event) => {
+                setIndex(event.target.value);
+            };
+
+            return (
+                <div>
+                    <h1>Super Counverter</h1>
+                    <select value={index} onChange={onSelect}>
+                        <option value="0">Munutes & Hours</option>
+                        <option value="1">Km & miles</option>
+                    </select>
+                <hr />
+                    {index === "0" ? <MinutesToHours /> : null}
+                    {index === "1" ? <KimToMiles /> : null}
                 </div>
             );
         }
