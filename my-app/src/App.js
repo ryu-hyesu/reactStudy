@@ -1,19 +1,13 @@
 import {useState} from "react" ;
 
 function App() {
-  // submit한 값을 가져와 array로 추가하는 법
 
   const [toDo, setToDo] = useState("");
   const [toDos, setToDos] = useState([]);
   const onChange = (event) => setToDo(event.target.value);
   
-  // 기존 js라면 setToDo.push를 했겠지만, jsx에서는 state를 직접 수정하지 않는다.
-  // 직접 수정하는 대신 함수를 사용한다.
-
-  // array를 직접 수정하지 않으면서 setToDos로 array에 element를 추가하는 방법
-  // currentArray / currentToDos를 받아오고, 새로운 array를 return한다. 
-  // 이때 array에 그냥 array를 추가하게 되면 원소가 array가 되지 원소자체들이 들어오지 않는다.
-  // 따라서 array의 원소들을 새로운 array에 추가하고 싶다면 ...이라는 문법을 사용해야 한다.
+  // react.js는 함수를 보낼 때 현재 state를 첫번째 매개변수로 받는다.
+  // 현재 toDo를 받아와 새로운 toDos의 array로 return 
   const onSubmit = (event) => {
     event.preventDefault();
     if (toDo === "")
@@ -22,7 +16,12 @@ function App() {
     setToDos(currentArray => [toDo, ...currentArray]);
   };
 
-  console.log(toDos);
+  // map으로 함수의 첫번쨰 argument로 현재의 item을 가져올 수 있따.
+  // map의 item들은 순서대로 return
+  // 동작할 때마다 새로운 버전의 toDos를 기준으로 동작한다.
+  // 그러나 console에서 같은 compenent의 list를 render할 때 key라는 prop를 넣어야 한다는 오류가 뜬다.
+  // react가 list에 있는 모든 item을 인식하기 때문에 생기는 오류
+  // 값이 추가될 떄마다 <li>가 하나씩 추가됨.
   return (
     <div>
       <form onSubmit={onSubmit}> 
@@ -34,6 +33,11 @@ function App() {
         />
         <button>Add to do</button>
       </form>
+      <hr />
+      {toDos.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))
+    }
     </div>
   );
 }
