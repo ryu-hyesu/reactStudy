@@ -1,43 +1,38 @@
-import {useState} from "react" ;
+import {useEffect, useState} from "react" ;
 
+// https://api.coinpaprika.com/v1/tickers
+// 컴포넌트가 가장 처음 render됐을 때 이 coin들을 실행해보자
+
+// Effect를 한 번만 사용하고 싶기 때문에 어떤 것도 의존하지 않기 위해 [] 상태로 놔둠.
+// respons로 부터 json을 추출하고 싶음.
+// 이후 이 data를 어떻게 컴포넌트에서 보여줄 수 있는가?
+// useState를 사용하여 컴포넌트에 추가시키고, 이후 loading값을 false로 바꿔준다.
+// coin 내부에 이미 key가 있기 때문에 map에 key추가 안 해도 됨.
+// coins에 기본값을 미리 지정해주어야 컴파일 오류가 생기지 않는다.
 function App() {
-
-  const [toDo, setToDo] = useState("");
-  const [toDos, setToDos] = useState([]);
-  const onChange = (event) => setToDo(event.target.value);
-  
-  // react.js는 함수를 보낼 때 현재 state를 첫번째 매개변수로 받는다.
-  // 현재 toDo를 받아와 새로운 toDos의 array로 return 
-  const onSubmit = (event) => {
-    event.preventDefault();
-    if (toDo === "")
-      return;
-    setToDo("");
-    setToDos(currentArray => [toDo, ...currentArray]);
-  };
-
-  // map으로 함수의 첫번쨰 argument로 현재의 item을 가져올 수 있따.
-  // map의 item들은 순서대로 return
-  // 동작할 때마다 새로운 버전의 toDos를 기준으로 동작한다.
-  // 그러나 console에서 같은 compenent의 list를 render할 때 key라는 prop를 넣어야 한다는 오류가 뜬다.
-  // react가 list에 있는 모든 item을 인식하기 때문에 생기는 오류
-  // 값이 추가될 떄마다 <li>가 하나씩 추가됨.
+  const [loading, setLoading] = useState(true);
+  const [coins, setCoins] = useState([])
+  useEffect(() => {
+    fetch("https://api.coinpaprika.com/v1/tickers")
+    .then((response) => response.json())
+    .then((json) => {
+      setCoins(json);
+      setLoading(false);
+    });
+  }, [])
   return (
     <div>
-      <form onSubmit={onSubmit}> 
-        <input 
-          onChange={onChange} 
-          value={toDo} 
-          type="text" 
-          placeholder="Write your to do6.." 
-        />
-        <button>Add to do</button>
-      </form>
-      <hr />
-      {toDos.map((item, index) => (
-        <li key={index}>{item}</li>
-      ))
-    }
+      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+      {loading ? <strong>Loading...</strong> : (
+        <select>
+        {coins.map((coin) => 
+        <option>
+          {coin.name} ({coin.symbol}) : ${coin.quotes.USD.price} USD
+        </option>
+      )}
+        </select>
+      )}
+      
     </div>
   );
 }
