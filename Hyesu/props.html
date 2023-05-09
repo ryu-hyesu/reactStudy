@@ -8,19 +8,21 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
 <script type="text/babel">
     
-    function Btn({text, changeValue}){
+    // 속성의 이름과 인자의 이름이 같으면 생략 가능
+    // 물론 인자에 기본 값을 미리 지정해주고 매개변수가 전달되지 않으면 기본값으로 줄 수 있다!
+    function Btn({text, fontSize = 12}){
         return (
             <button 
-                onClick={changeValue}
                 style={{
                     backgroundColor: "tomato",
                     color:"white",
                     padding:"10px 20px",
                     border:10,
                     borderRadius:10,
-                    fontSize: 16 ,
+                    fontSize ,
                 }}
             >
                 {text}
@@ -28,15 +30,17 @@
         );
     }
 
-    //부모 컴포넌트의 state가 바뀌었을 때 자식 컴포넌트는?
-    //porps에 인자로 전달해줄 때는 해당 기능으로 직접적으로 들어가는 게 아니라는 걸 명심해야 한다. 단지 매개변수만 전달해주는 것이지 어떤 특별한 기능을 하는 게 아님.
+    Btn.propTypes = {
+        text: PropTypes.string,
+        fontSize : PropTypes.number
+    };
+
+    // 만약 props를 잘못 넘겨주게 된다면? 예컨대 props의 타입이 string인데 int로 받게 된다면? 우리는 오류가 있다는 걸 알지만 reactjs는 그게 오류인지 모름.
+    // 그걸 지정해주는 게 propType
     function App() {
-        const [value, setValue] = React.useState("Save Changes");
-        const changeValue = () => setValue("Revert changes");
         return (
             <div>
-                <Btn text={value} changeValue={changeValue}/>
-                <Btn text="continue"/>
+                <Btn text="Save Changes" fontSize={13}/>
             </div>
         );
     }
