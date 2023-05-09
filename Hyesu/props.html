@@ -9,33 +9,26 @@
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script type="text/babel">
-    // 버튼마다 컴포넌트를 만듦
-    function SaveBtn(){
+    // 매 버튼마다 디자인 양식을 복붙할 수는 없으니 버튼 컴포넌트를 만든 후 텍스트만 바꿀 수 있도록 컴포넌트를 재활용해야 한다.
+    // props.bannana로 받아올 필요 없이 처음부터 중괄호에 인자를 넣으면(오브젝트로 부터) props의 멤버로 적지 않아도 된다.
+    function Btn({text, big}){
         return <button style={{
             backgroundColor: "tomato",
             color:"white",
             padding:"10px 20px",
             border:10,
-            borderRadius:10
-        }}>SAVE CANGES</button>
+            borderRadius:10,
+            fontSize: big ? 18 : 16 ,
+        }}>{text}</button>
     }
 
-    function ConfirmBtn(){
-        return <button style={{
-            backgroundColor: "tomato",
-            color:"white",
-            padding:"10px 20px",
-            border:10,
-            borderRadius:10
-        }}>CONFIRM</button>
-    }
-
-
+    // btn 함수에 인자를 받아 매개변수로 전달할 수 있다. btn는 컴포넌트지만 함수이기 때문에.
     function App() {
         return (
             <div>
-                <SaveBtn/>
-                <ConfirmBtn/>
+                
+                <Btn text="Save changes" big={true}/>
+                <Btn text="continue" big={false}/>
             </div>
         );
     }
