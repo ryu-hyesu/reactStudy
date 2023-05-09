@@ -9,24 +9,33 @@
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script type="text/babel">
-    function Btn({text, big}) {
+    // 버튼마다 컴포넌트를 만듦
+    function SaveBtn(){
         return <button style={{
             backgroundColor: "tomato",
-            color: "white",
-            padding: "10px 20px",
-            border: 0,
-            borderRadius: 10,
-            fontSize: big ? 18 : 16,
-        }}>{text}</button>
+            color:"white",
+            padding:"10px 20px",
+            border:10,
+            borderRadius:10
+        }}>SAVE CANGES</button>
     }
-    function CounfirmBtn() {
-        return <button>Confirm</button>;
+
+    function ConfirmBtn(){
+        return <button style={{
+            backgroundColor: "tomato",
+            color:"white",
+            padding:"10px 20px",
+            border:10,
+            borderRadius:10
+        }}>CONFIRM</button>
     }
+
+
     function App() {
         return (
             <div>
-                <Btn text="Save Changes" big={true}/>
-                <Btn text="Countinue" big={false}/>
+                <SaveBtn/>
+                <ConfirmBtn/>
             </div>
         );
     }
