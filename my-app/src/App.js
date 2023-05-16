@@ -1,48 +1,28 @@
-import {useEffect, useState} from "react" ;
 
-// then보다는 async-await를 더 보편적으로 사용한다.
-// 첫번째로 setMovies하고 setLoading을 두번째로 했기 때문에 로그에 두번 찍힌다.
-// 리스트에 있는 걸 화면에 보이려면 map을 사용해야 한다.
-// 로딩 중이 아니라면 movie를 보여준다. map은 array의 item을 가져와 변형시켜 새 array를 만듦.
+
+// 라우터는 두가지 종류가 있음 1. hash 2. broweser
+import Home from "./routes/Home";
+import Detail from "./routes/Detail";
+import React from 'react';
+
+// component 사용!
+// 키는 react.js에서만, map안에서 component를 render할 때 필요
+// we want to change pages -> react-router
+// 스크린 단위(라우터별로)로 생각해야 함.
+// 따라서 home라우터를 보여주고 모든 걸 보여준 뒤 movie router를 두고 그ㅡ곳에는 영화 하나만.
+
+// App는 더이상 기능은 없고, router을 render함.
+// router는 URL을 보고 있는 COMPONENT
+
+// URL을 받아 switch(현재는 Routes로 바꼈음.)로 Route를 찾으면 컴포넌트를 렌더링함.
+import { BrowserRouter as Router, Routes, Route, link } from "react-router-dom";
+
+
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [movies, setMovies] = useState([]);
-  const getMovies = async() => {
-    const json = await (
-      await fetch(
-      `https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year`
-      )
-    ).json();
-    
-    setMovies(json.data.movies);
-    setLoading(false);
-  };
-  useEffect(() => {
-    getMovies();
-  }, [])
-  console.log(movies);
   return (
-    <div>
-      {loading ? (
-        <h1>Loading...</h1>
-       ) : (
-        <div>
-          {movies.map(movie => (
-            <div key={movie.id}>
-              <img src={movie.medium_cover_image}></img>
-              <h2>{movie.title}</h2>
-              <p>{movie.summary}</p>
-              <ul>
-                {movie.genres.map((g) => (
-                  <li key={g}>{g}</li>
-                ))}
-              </ul>
-            </div>
-            ))}
-          </div>
-        )}
-    </div>
+    <Routes>
+    <Route path="/" element={<Home />} />
+    </Routes>
   );
 }
-
 export default App;
